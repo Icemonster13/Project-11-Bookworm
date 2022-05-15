@@ -45,6 +45,11 @@ struct DetailView: View {
             
             RatingView(rating: .constant(Int(book.rating)))
                 .font(.largeTitle)
+            
+            // Added for challenge 11.3
+            Text("Date Reviewed: \(book.date?.formatted(date: .abbreviated, time: .shortened) ?? "N/A")")
+                .font(.footnote)
+                .padding()
         }
         .navigationTitle(book.title ?? "Unknown Book")
         .navigationBarTitleDisplayMode(.inline)

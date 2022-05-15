@@ -17,8 +17,16 @@ struct AddBookView: View {
     @State private var title = ""
     @State private var author = ""
     @State private var rating = 3
-    @State private var genre = ""
+    @State private var genre = "Mystery"
     @State private var review = ""
+    // Added for challenge 11.1
+    var validInfoProvided: Bool {
+        if !title.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ||
+            !author.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            return false
+        }
+        return true
+    }
     
     let genres = ["Fantasy", "Horror", "Kids", "Mystery", "Poetry", "Romance", "Thriller"]
     
@@ -35,10 +43,13 @@ struct AddBookView: View {
                             Text($0)
                         }
                     }
+                } header: {
+                    Text("Book Details (Required)")
                 }
                 
                 Section {
                     TextEditor(text: $review)
+                        .frame(height: 200)
                     RatingView(rating: $rating)
                 } header: {
                     Text("Write a review")
@@ -53,10 +64,13 @@ struct AddBookView: View {
                         newBook.rating = Int16(rating)
                         newBook.genre = genre
                         newBook.review = review
-                        
+                        // Added for challenge 11.3
+                        newBook.date = Date.now
                         try? moc.save()
                         dismiss()
                     }
+                    // Added for challenge 11.1
+                    .disabled(validInfoProvided)
                 }
             }
             .navigationTitle("Add Book")
